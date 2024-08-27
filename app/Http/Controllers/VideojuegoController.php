@@ -8,6 +8,20 @@ use App\Models\Videojuego;
 class VideojuegoController extends Controller
 {
     public function Create(Request $request){
+        $validation = Validator::make($request->all(),[
+            'nombre' => 'required',
+            'genero' => 'required',
+            'plataforma' => 'required',
+            'distribuidora' => 'required',
+            'desarrolladora' => 'required',
+            'fecha_lanzamiento' => 'required|date',
+            'precio' => 'required|numeric',
+            'descripcion' => 'required'
+        ]);
+
+        if($validation->fails())
+            return $validation->errors();
+        
         $videojuego = new Videojuego();
         $videojuego->nombre = $request->nombre;
         $videojuego->genero = $request->genero;
@@ -37,6 +51,21 @@ class VideojuegoController extends Controller
 
     public function Update(Request $request, $id){
         $videojuego = Videojuego::findOrFail($id);
+
+        $validation = Validator::make($request->all(),[
+            'nombre' => 'required',
+            'genero' => 'required',
+            'plataforma' => 'required',
+            'distribuidora' => 'required',
+            'desarrolladora' => 'required',
+            'fecha_lanzamiento' => 'required|date',
+            'precio' => 'required|numeric',
+            'descripcion' => 'required'
+        ]);
+
+        if($validation->fails())
+            return $validation->errors();
+
         $videojuego->nombre = $request->nombre;
         $videojuego->genero = $request->genero;
         $videojuego->plataforma = $request->plataforma;

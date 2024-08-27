@@ -19,8 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get("/videojuegos", [VideojuegoController::class, "List"]);
-Route::get("/videojuegos/{id}", [VideojuegoController::class, "Show"]);
-Route::post("/videojuegos", [VideojuegoController::class, "Create"]);
-Route::put("/videojuegos/{id}", [VideojuegoController::class, "Update"]);
-Route::delete("/videojuegos/{id}", [VideojuegoController::class, "Delete"]);
+Route::get("/videojuego", [VideojuegoController::class, "List"]);
+Route::get("/videojuego/{id}", [VideojuegoController::class, "Show"]);
+Route::post("/videojuego", [VideojuegoController::class, "Create"]);
+Route::put("/videojuego/{id}", [VideojuegoController::class, "Update"]);
+Route::delete("/videojuego/{id}", [VideojuegoController::class, "Delete"]);

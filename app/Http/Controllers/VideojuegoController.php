@@ -22,7 +22,7 @@ class VideojuegoController extends Controller
         ]);
 
         if($validation->fails())
-            return $validation->errors();
+            return response()->json($validation->errors(),401);
         
         $videojuego = new Videojuego();
         $videojuego->nombre = $request->nombre;

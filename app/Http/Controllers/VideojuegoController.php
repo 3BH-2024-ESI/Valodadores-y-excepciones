@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 
 class VideojuegoController extends Controller
 {
+    private $MYSQL_ERROR_DUPLICATED = "1062";
+
     public function Create(Request $request){
         $validation = Validator::make($request->all(),[
             'nombre' => 'required',
@@ -24,17 +26,30 @@ class VideojuegoController extends Controller
         if($validation->fails())
             return response()->json($validation->errors(),401);
         
-        $videojuego = new Videojuego();
-        $videojuego->nombre = $request->nombre;
-        $videojuego->genero = $request->genero;
-        $videojuego->plataforma = $request->plataforma;
-        $videojuego->distribuidora = $request->distribuidora;
-        $videojuego->desarrolladora = $request->desarrolladora;
-        $videojuego->fecha_lanzamiento = $request->fecha_lanzamiento;
-        $videojuego->precio = $request->precio;
-        $videojuego->descripcion = $request->descripcion;
-        $videojuego->save();
-        return $videojuego;
+        try{
+            $videojuego = new Videojuego();
+            $videojuego->nombre = $request->nombre;
+            $videojuego->genero = $request->genero;
+            $videojuego->plataforma = $request->plataforma;
+            $videojuego->distribuidora = $request->distribuidora;
+            $videojuego->desarrolladora = $request->desarrolladora;
+            $videojuego->fecha_lanzamiento = $request->fecha_lanzamiento;
+            $videojuego->precio = $request->precio;
+            $videojuego->descripcion = $request->descripcion;
+            $videojuego->save();
+            return $videojuego;
+        }
+        catch(\Illuminate\Database\QueryException $ex){
+            if(str_contains($ex->getMessage(),$this -> MYSQL_ERROR_DUPLICATED))
+                return response([ "error" => "El nombre esta repetido" ],401);
+        
+            return response([ "error" => "Error desconocido." ],401);
+        }
+        catch(\Exception $ex){
+            return response([ "error" => "Error desconocido." ],401);
+
+        }
+
     }
 
     public function List(Request $request){
